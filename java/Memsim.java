@@ -28,11 +28,11 @@ public class Memsim {
             mmu = new RandMMU(frames);
         else if (args[2].equals("lru"))
             mmu = new LruMMU(frames);
-        else if (args[2].equals("esc"))
-            mmu = new EscMMU(frames);
+        else if (args[2].equals("clock"))
+            mmu = new ClockMMU(frames);
         else {
             System.out.println("Usage: java Memsim inputfile numberframes replacementmode debugmode");
-            System.out.println("replacementmodes are [ rand | lru | esc ]");
+            System.out.println("replacementmodes are [ rand | lru | clock ]");
             System.exit(-1);
         }
         
@@ -91,7 +91,8 @@ public class Memsim {
         System.out.println("events in trace: " + no_events);
         System.out.println("total disk reads: " + mmu.getTotalDiskReads());
         System.out.println("total disk writes: " + mmu.getTotalDiskWrites());
-        System.out.println("page fault rate: " + ((double) mmu.getTotalPageFaults())/frames);
+        java.text.DecimalFormat f = new java.text.DecimalFormat("0.0000");
+        System.out.println("page fault rate: " + f.format(((double)disk_reads)/no_events));
     }
     
 }
