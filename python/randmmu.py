@@ -38,7 +38,7 @@ class RandMMU(MMU):
         if len(self.page_table) < self.frames:
             self.page_table[page_number] = (len(self.page_table), is_write)
             if self.debug:
-                print(f"  Allocated page {page_number} into free frame")
+                print(f" - Allocated page {page_number} into free frame")
             return
 
         # No free frame → random victim
@@ -48,26 +48,26 @@ class RandMMU(MMU):
         if dirty:
             self.disk_writes += 1
             if self.debug:
-                print(f"  Evicting dirty page {victim_page} (disk write)")
+                print(f" - Evicting dirty page {victim_page} (disk write)")
         else:
             if self.debug:
-                print(f"  Evicting clean page {victim_page} (discarded)")
+                print(f" - Evicting clean page {victim_page} (discarded)")
 
         del self.page_table[victim_page]
         self.page_table[page_number] = (frame_index, is_write)
 
         if self.debug:
-            print(f"  Loaded new page {page_number} into frame {frame_index}")
+            print(f" - Loaded new page {page_number} into frame {frame_index}")
 
     def read_memory(self, page_number):
         self._access_page(page_number, is_write=False)
         if self.debug:
-            print(f"  Read from page {page_number}")
+            print(f" - Read from page {page_number}")
 
     def write_memory(self, page_number):
         self._access_page(page_number, is_write=True)
         if self.debug:
-            print(f"  Write to page {page_number}")
+            print(f" - Write to page {page_number}")
 
     def get_total_disk_reads(self):
         return self.disk_reads

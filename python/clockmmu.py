@@ -70,7 +70,7 @@ class ClockMMU(MMU):
             self.ref_bits[idx] = 1
             self.dirty_bits[idx] = 1 if is_write else 0
             if self.debug:
-                print(f"  Allocated page {page_number} to free frame {idx}")
+                print(f" - Allocated page {page_number} to free frame {idx}")
             return
 
         # Replacement required
@@ -79,10 +79,10 @@ class ClockMMU(MMU):
         if dirty:
             self.disk_writes += 1
             if self.debug:
-                print(f"  Evicting dirty page {victim_page} (disk write)")
+                print(f" - Evicting dirty page {victim_page} (disk write)")
         else:
             if self.debug:
-                print(f"  Evicting clean page {victim_page} (discarded)")
+                print(f" - Evicting clean page {victim_page} (discarded)")
 
         # Replace with new page
         del self.page_to_frame[victim_page]
@@ -92,7 +92,7 @@ class ClockMMU(MMU):
         self.dirty_bits[idx] = 1 if is_write else 0
 
         if self.debug:
-            print(f"  Loaded new page {page_number} into frame {idx}")
+            print(f" - Loaded new page {page_number} into frame {idx}")
 
         # Advance clock hand
         self.clock_hand = (idx + 1) % self.frames
@@ -100,12 +100,12 @@ class ClockMMU(MMU):
     def read_memory(self, page_number):
         self._access_page(page_number, is_write=False)
         if self.debug:
-            print(f"  Read from page {page_number}")
+            print(f" - Read from page {page_number}")
 
     def write_memory(self, page_number):
         self._access_page(page_number, is_write=True)
         if self.debug:
-            print(f"  Write to page {page_number}")
+            print(f" - Write to page {page_number}")
 
     def get_total_disk_reads(self):
         return self.disk_reads
