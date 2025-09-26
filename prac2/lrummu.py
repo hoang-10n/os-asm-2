@@ -62,10 +62,10 @@ class LruMMU(MMU):
         if dirty:
             self.disk_writes += 1
             if self.debug:
-                print(f" - Evicting dirty page {victim_page} (disk write)")
+                print(f" - Removing dirty page {victim_page} (disk write)")
         else:
             if self.debug:
-                print(f" - Evicting clean page {victim_page} (discarded)")
+                print(f" - Removing clean page {victim_page} (discarded)")
 
         # Remove victim from page table
         del self.page_table[victim_page]
@@ -94,7 +94,7 @@ class LruMMU(MMU):
         return self.disk_reads
 
     def get_total_disk_writes(self):
-        """Return total disk writes (evicted dirty pages)."""
+        """Return total disk writes (removed dirty pages)."""
         return self.disk_writes
 
     def get_total_page_faults(self):

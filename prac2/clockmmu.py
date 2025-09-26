@@ -30,7 +30,7 @@ class ClockMMU(MMU):
         """
         Clock replacement algorithm:
         - Scan with clock hand
-        - If ref bit == 0, evict this frame
+        - If ref bit == 0, remove this frame
         - If ref bit == 1, clear it and move hand forward
         """
         while True:
@@ -79,10 +79,10 @@ class ClockMMU(MMU):
         if dirty:
             self.disk_writes += 1
             if self.debug:
-                print(f" - Evicting dirty page {victim_page} (disk write)")
+                print(f" - Removing dirty page {victim_page} (disk write)")
         else:
             if self.debug:
-                print(f" - Evicting clean page {victim_page} (discarded)")
+                print(f" - Removing clean page {victim_page} (discarded)")
 
         # Replace with new page
         del self.page_to_frame[victim_page]

@@ -41,17 +41,17 @@ class RandMMU(MMU):
                 print(f" - Allocated page {page_number} into free frame")
             return
 
-        # No free frame → random victim
+        # No free frame -> choose random victim
         victim_page = random.choice(list(self.page_table.keys()))
         frame_index, dirty = self.page_table[victim_page]
 
         if dirty:
             self.disk_writes += 1
             if self.debug:
-                print(f" - Evicting dirty page {victim_page} (disk write)")
+                print(f" - Removing dirty page {victim_page} (disk write)")
         else:
             if self.debug:
-                print(f" - Evicting clean page {victim_page} (discarded)")
+                print(f" - Removing clean page {victim_page} (discarded)")
 
         del self.page_table[victim_page]
         self.page_table[page_number] = (frame_index, is_write)
